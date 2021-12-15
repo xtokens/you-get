@@ -1840,8 +1840,12 @@ def url_to_module(url):
 
 
 def any_download(url, **kwargs):
+    # 强制json格式输出信息、不直接下载
+    # 部分extractor没有使用json_output，依赖json_output
+    global json_output
+    json_output = True
     m, url = url_to_module(url)
-    m.download(url, **kwargs)
+    m.download(url, json_output=True, **kwargs)
 
 
 def any_download_playlist(url, **kwargs):
