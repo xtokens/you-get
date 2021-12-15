@@ -14,7 +14,6 @@ except:
     README = ""
 CHANGELOG = open(os.path.join(here, 'CHANGELOG.rst'), encoding='utf-8').read()
 VERSION = imp.load_source('version', os.path.join(here, 'src/%s/version.py' % PACKAGE_NAME)).__version__
-VERSION = VERSION + '.1'
 
 from setuptools import setup, find_packages
 setup(
