@@ -10,12 +10,21 @@ def output(video_extractor, pretty_print=True):
     out['url'] = ve.url
     out['title'] = ve.title
     out['site'] = ve.name
-    out['streams'] = ve.streams
-    try:
+    out['streams'] = []
+
+    try:  # 对dash_streams排序
         if ve.dash_streams:
-            out['streams'].update(ve.dash_streams)
+            try:
+                out['streams'].extend([dict([('id', stream_type['id'])] + list(ve.dash_streams[stream_type['id']].items())) for
+                                       stream_type in ve.__class__.stream_types if stream_type['id'] in ve.dash_streams])
+            except:
+                out['streams'].extend([dict([('itag', stream_type['itag'])] + list(ve.dash_streams[stream_type['itag']].items()))
+                                       for stream_type in ve.__class__.stream_types if stream_type['itag'] in ve.dash_streams])
     except AttributeError:
         pass
+
+    out['streams'].extend(ve.streams_sorted)
+
     try:
         if ve.audiolang:
             out['audiolang'] = ve.audiolang
